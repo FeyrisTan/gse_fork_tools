@@ -33,8 +33,16 @@ def generate_stats_achievements(
                         value = ach['display'][x]
                         if f'{x}'.lower() == 'name':
                             x = 'displayName'
+                            if isinstance(value, dict):
+                                value = {k: str(v) for k, v in value.items()}
+                            else:
+                                value = str(value)
                         elif f'{x}'.lower() == 'desc':
                             x = 'description'
+                            if isinstance(value, dict):
+                                value = {k: str(v) for k, v in value.items()}
+                            else:
+                                value = str(value)
                         elif x == 'Hidden' or f'{x}'.lower() == 'hidden':
                             x = 'hidden'
                             try:
@@ -45,6 +53,10 @@ def generate_stats_achievements(
                     out['name'] = ach['name']
                     if 'progress' in ach:
                         out['progress'] = ach['progress']
+                        if 'min_val' in out['progress']:
+                            out['progress']['min_val'] = str(out['progress']['min_val'])
+                        if 'max_val' in out['progress']:
+                            out['progress']['max_val'] = str(out['progress']['max_val'])
                     achievements_out += [out]
             else:
                 out = {}
